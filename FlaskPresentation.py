@@ -19,7 +19,7 @@ db = mysql.connector.connect(
 
 
 conn = sqlalchemy.create_engine(
-    'mysql+pymysql://kinanweda:Jimbamamba22@localhost:3306/ProjectAkhir2'
+    'mysql+pymysql://kinanweda:12345@localhost:3306/ProjectAkhir2'
 )
 
 country_geo = 'world-countries.json'

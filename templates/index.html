@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Dashboard</title>
+    <!-- CSS Bootstraop -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+     <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href={{url_for('static', filename='stylingtable.css')}}>
+    <link rel="stylesheet" type="text/css" href={{url_for('static', filename='stylingnext.css')}}>
+</head>
+<body>
+      <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <button class="nav-link active" onclick="ChangeToPage1()">Data Customers</button>
+            </li>
+            <li class="nav-item">
+              <button class="nav-link" onclick="ChangeToPage2()">Map</button>
+            </li>
+            <li class="nav-item">
+              <button class="nav-link" onclick="ChangeToPage3()">Pie Chart</button>
+            </li>
+            <li class="nav-item">
+              <button class="nav-link" onclick="ChangeToPage4()">Plot</button>
+            </li>
+            <li class="nav-item">
+              <button class="nav-link" onclick="ChangeToPage5()">Test Predict</button>
+            </li>
+      </ul>
+    <div id="home" style="display: block">
+    <form action="" method="POST">
+        <div class="row" style="margin-left: 3%;">
+            <form class="col s12">
+              <div class="row">
+                <div class="input-field col s6" style="margin-left: 2%">
+                  <input id="first_name2" type="text" class="validate"  name="submit_button">
+                  <label class="active" for="first_name2">Workclass</label>
+                  <button class="btn btn-primary light-blue lighten-3" type="submit" style="margin-left: 35%;">Submit</button>
+                </div>
+              </div>
+            </form>
+          </div>
+    </form>
+    <center><h5><b>Dataset Income</b></h5></center>
+    <table id='customers'>
+        <tr>
+        {% for header in headers %}<th>{{ header }}&nbsp&nbsp</th>{% endfor %}
+        </tr>
+        {% for i in length %}
+        <tr>
+        {% for j in headers %}<td>{{ df.ix[i,j] }}&nbsp&nbsp</td>
+        {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+    <form action="" method="POST" style="margin-top: 1%;">
+    <button class="btn btn-primary light-blue lighten-3"   name="submit_button"  value="Previous" style="margin-left: 48%">Prev</button>
+    <button class="btn btn-primary light-blue lighten-3"  name="submit_button"  value="Next">Next</button>
+    </form>
+    </div>
+    <form action="http://localhost:5000/dashboard" method="POST">
+    <div id='map' style="display: none; width: 650px; height:500px;margin-top:1%;margin-left: 22%">
+        <iframe src=' http://localhost:5000/map' width=650px height=500px></iframe>'
+        <button class="btn btn-primary light-blue lighten-3"   name="submit_button"  value="Fullscreen" style="margin-left: 48%">Fullscreen</button>
+    </div>
+    <div id="plot1" style="display: none">
+        <center><div class="chart" id="pie" style="width: 650px; height:650px"></div></center>
+    </div>
+    <div id="plot2" style="display: none">
+      <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Dropdown
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenu2" >
+          <button class="dropdown-item"  type="button" onclick="ChangeToPlot0()" >Workclass</button>
+          <button class="dropdown-item"  type="button" onclick="ChangeToPlot1()" >Occupation</button>
+          <button class="dropdown-item"  type="button" onclick="ChangeToPlot2()" >Education</button>
+          <button class="dropdown-item"  type="button" onclick="ChangeToPlot3()" >Marital Status</button>
+          <button class="dropdown-item"  type="button" onclick="ChangeToPlot4()" >Relationship</button>
+          <button class="dropdown-item"  type="button" onclick="ChangeToPlot5()" >Race</button>
+        </div>
+      </div>
+      <div id='cluster0' style="display: block">
+        <center><h5><b>Workclass</b></h5>
+      <div class="chart" id="cl0" style="width: 500px; height:500px"></div></center>
+      </div>
+      <div id='cluster1' style="display:none">
+          <center><h5><b>Occupation</b></h5>
+      <div class="chart" id="cl1" style="width: 500px; height:500px"></div></center>
+      </div>
+      <div id='cluster2' style="display:none">
+          <center><h5><b>Education</b></h5>
+      <div class="chart" id="cl2" style="width: 500px; height:500px"></div></center>
+      </div>  
+      <div id='cluster3' style="display:none">
+          <center><h5><b>Marital Status</b></h5>
+      <div class="chart" id="cl3" style="width: 500px; height:500px"></div></center>
+      </div>  
+      <div id='cluster4' style="display:none">
+          <center><h5><b>Relationship</b></h5>
+      <div class="chart" id="cl4" style="width: 500px; height:500px"></div></center>
+      </div> 
+      <div id='cluster5' style="display:none">
+          <center><h5><b>Race</b></h5>
+      <div class="chart" id="cl5" style="width: 500px; height:500px"></div></center>
+      </div> 
+    </div>
+    <div id="predict" style="display: none">
+      <center><h5><b>Data Clustering</b></h5></center>
+      <table id='customers'>
+        <tr>
+        {% for h in head %}<th>{{ h }}&nbsp&nbsp</th>{% endfor %}
+        </tr>
+        {% for p in lengths %}
+        <tr>
+        {% for q in head %}<td>{{ dfPrediksi.ix[p,q] }}&nbsp&nbsp</td>
+        {% endfor %}
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+</body>
+<!-- Javascript Bootstrap -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script>function ChangeToPage1() {
+    document.getElementById("home").style.display= "block";
+    document.getElementById("map").style.display= "none";
+    document.getElementById("plot1").style.display= "none";
+    document.getElementById("plot2").style.display= "none";
+    document.getElementById("predict").style.display= "none";
+  }
+  function ChangeToPage2() {
+    document.getElementById("home").style.display= "none";
+    document.getElementById("map").style.display= "block";
+    document.getElementById("plot1").style.display= "none";
+    document.getElementById("plot2").style.display= "none";
+    document.getElementById("predict").style.display= "none";
+  }
+  function ChangeToPage3() {
+    document.getElementById("home").style.display= "none";
+    document.getElementById("map").style.display= "none";
+    document.getElementById("plot1").style.display= "block";
+    document.getElementById("plot2").style.display= "none";
+    document.getElementById("predict").style.display= "none";
+  }
+  function ChangeToPage4() {
+    document.getElementById("home").style.display= "none";
+    document.getElementById("map").style.display= "none";
+    document.getElementById("plot1").style.display= "none";
+    document.getElementById("plot2").style.display= "block";
+    document.getElementById("predict").style.display= "none";
+  }
+  function ChangeToPage5() {
+    document.getElementById("home").style.display= "none";
+    document.getElementById("map").style.display= "none";
+    document.getElementById("plot1").style.display= "none";
+    document.getElementById("plot2").style.display= "none";
+    document.getElementById("predict").style.display= "block";
+  }</script>
+  <script>function ChangeToPlot0() {
+    document.getElementById("cluster0").style.display= "block";
+    document.getElementById("cluster1").style.display= "none";
+    document.getElementById("cluster2").style.display= "none";
+    document.getElementById("cluster3").style.display= "none";
+    document.getElementById("cluster4").style.display= "none";
+    document.getElementById("cluster5").style.display= "none";
+  }
+  function ChangeToPlot1() {
+    document.getElementById("cluster0").style.display= "none";
+    document.getElementById("cluster1").style.display= "block";
+    document.getElementById("cluster2").style.display= "none";
+    document.getElementById("cluster3").style.display= "none";
+    document.getElementById("cluster4").style.display= "none";
+    document.getElementById("cluster5").style.display= "none";
+  }
+  function ChangeToPlot2() {
+    document.getElementById("cluster0").style.display= "none";
+    document.getElementById("cluster1").style.display= "none";
+    document.getElementById("cluster2").style.display= "block";
+    document.getElementById("cluster3").style.display= "none";
+    document.getElementById("cluster4").style.display= "none";
+    document.getElementById("cluster5").style.display= "none";
+  }
+  function ChangeToPlot3() {
+    document.getElementById("cluster0").style.display= "none";
+    document.getElementById("cluster1").style.display= "none";
+    document.getElementById("cluster2").style.display= "none";
+    document.getElementById("cluster3").style.display= "block";
+    document.getElementById("cluster4").style.display= "none";
+    document.getElementById("cluster5").style.display= "none";
+  }
+  function ChangeToPlot4() {
+    document.getElementById("cluster0").style.display= "none";
+    document.getElementById("cluster1").style.display= "none";
+    document.getElementById("cluster2").style.display= "none";
+    document.getElementById("cluster3").style.display= "none";
+    document.getElementById("cluster4").style.display= "block";
+    document.getElementById("cluster5").style.display= "none";
+  }
+  function ChangeToPlot5() {
+    document.getElementById("cluster0").style.display= "none";
+    document.getElementById("cluster1").style.display= "none";
+    document.getElementById("cluster2").style.display= "none";
+    document.getElementById("cluster3").style.display= "none";
+    document.getElementById("cluster4").style.display= "none";
+    document.getElementById("cluster5").style.display= "block";
+  }
+  </script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+  <script>
+    var graphs = {{ plot | safe }};
+    Plotly.plot('pie',graphs,{});
+  </script>
+  <script>
+    var graphs = {{ plotbar | safe }};
+    Plotly.plot('cl0',graphs,{});
+  </script>
+  <script>
+    var graphs = {{ plotbar1 | safe }};
+    Plotly.plot('cl1',graphs,{});
+  </script>
+  <script>
+    var graphs = {{ plotbar2 | safe }};
+    Plotly.plot('cl2',graphs,{});
+  </script>
+  <script>
+    var graphs = {{ plotbar3 | safe }};
+    Plotly.plot('cl3',graphs,{});
+  </script>
+  <script>
+    var graphs = {{ plotbar4 | safe }};
+    Plotly.plot('cl4',graphs,{});
+  </script>
+  <script>
+    var graphs = {{ plotbar5 | safe }};
+    Plotly.plot('cl5',graphs,{});
+  </script>
+</html>
